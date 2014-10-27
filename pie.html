@@ -1,0 +1,453 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<head>
+<script src="http://d3js.org/d3.v2.js"></script>
+</head>
+<body>
+<h1>Informatics 143</h1>
+<h2>Percentage of each Major</h2>
+<a href="bar.html">Part 1</a> | 
+Part2 | 
+<a href="three.html">Part3</a>
+
+<script>
+
+  data = [{"major": "Art", "value": 2, "percentage":"6%"}, {"major": "Biology", "value": 3, "percentage":"8%"}, {"major": "Chemistry", "value": 8, "percentage":"22%"}
+  , {"major": "Computer Science", "value": 9, "percentage":"25%"}, {"major": "Economics", "value": 1, "percentage":"3%"}, {"major": "Medieval History", "value": 2, "percentage":"6%"}
+  , {"major": "Physics", "value": 4, "percentage":"11%"}, {"major": "Social Science", "value": 6, "percentage":"19%"}];
+  
+      var w = 600,                        //width
+      h = 360,                            //height
+      r = 180, 
+      ri = 100,                           //radius
+      color = d3.scale.category20();     //builtin range of colors
+  
+      /*data = [{"label":"one", "value":20}, 
+              {"label":"two", "value":50}, 
+              {"label":"three", "value":30}];*/
+      
+      var vis = d3.select("body").append("svg:svg")              //create the SVG element inside the <body>
+          .data([data])                   //associate our data with the document
+              .attr("width", w)           //set the width and height of our visualization (these will be attributes of the <svg> tag
+              .attr("height", h)
+          .append("svg:g")                //make a group to hold our pie chart
+              .attr("transform", "translate(" + r + "," + r + ")");
+              
+      vis.selectAll("rect.legend")
+      	 .data([data])
+         .enter().append("rect.legend")
+           .attr("class", "legend")
+           .attr("opacity", 1)
+           .style("fill", function(d,i){ return color(i);})
+           .attr("x", function(d, i) { return 50; })
+           .attr("y", function(d, i) { return 20*(i+.5); })
+           .attr("width",10)
+           .attr("height",10)
+           .transition()
+           .duration(1000)
+           .delay(1500)
+           .attr("opacity", 1);    //move the center of the pie chart from 0, 0 to radius, radius
+          
+      var arc = d3.svg.arc()              //this will create <path> elements for us using arc data
+          .outerRadius(1)
+          .innerRadius(1);
+          
+      var arc2 = d3.svg.arc()              //this will create <path> elements for us using arc data
+          .outerRadius(r)
+          .innerRadius(1);
+          
+      var arc3 = d3.svg.arc()              //this will create <path> elements for us using arc data
+          .outerRadius(r)
+          .innerRadius(ri);
+  
+      var pie = d3.layout.pie()           //this will create arc data for us given a list of values
+          .value(function(d) { return d.value; });    //we must tell it out to access the value of each element in our data array
+  
+      var arcs = vis.selectAll("g.slice")     //this selects all <g> elements with class slice (there aren't any yet)
+          .data(pie)                          //associate the generated pie data (an array of arcs, each having startAngle, endAngle and value properties) 
+          .enter()                            //this will create <g> elements for every "extra" data element that should be associated with a selection. The result is creating a <g> for every object in the data array
+          .append("svg:g")                //create a group to hold each slice (we will have a <path> and a <text> element associated with each slice)
+          .attr("class", "slice");    //allow us to style things in the slices (like text)
+  			
+          arcs.append("svg:path")
+          .attr("fill", function(d, i) { return color(i); } ) //set the color for each slice to be chosen from the color function defined above
+          .attr("d", arc)
+          .attr("transform", "rotate(0 deg)")  
+          .transition()
+          .duration(1000)
+          .attr("d", arc2)
+          .attr("transform", "rotate(360 deg)")                              //this creates the actual SVG path using the associated data (pie) with the arc drawing function
+  		  .transition()
+  		  .delay(1000)
+  		  .duration(1000)
+  		  .attr("d", arc3);
+  		  
+          arcs.append("svg:text") 
+          .attr("opacity",0)
+          .transition()
+          .attr("opacity",1)
+          .delay(1000) 
+          .duration(1000)                                   //add a label to each slice
+                  .attr("transform", function(d) {                    //set the label's origin to the center of the arc
+                  //we have to make sure to set these before calling arc.centroid
+                  d.innerRadius = 0;
+                  d.outerRadius = r;
+                  return "translate(" + arc3.centroid(d) + ")";        //this gives us a pair of coordinates like [50, 50]
+              })
+          .attr("text-anchor", "middle")                          //center the text on it's origin
+          .text(function(d, i) { return data[i].percentage + " " + data[i].major; })
+          .attr("font-size", "10px");       //get the label from our original data array
+               
+</script>
+<h2>Raw Data</h2>
+<table border=1 cellpadding=0 cellspacing=0 width=662 style='border-collapse:
+ collapse;table-layout:fixed;width:662pt'>
+ <col width=77 style='mso-width-source:userset;mso-width-alt:2816;width:77pt'>
+ <col width=118 style='mso-width-source:userset;mso-width-alt:4315;width:118pt'>
+ <col width=77 span=2 style='mso-width-source:userset;mso-width-alt:2816;
+ width:77pt'>
+ <col width=82 style='mso-width-source:userset;mso-width-alt:2998;width:82pt'>
+ <col width=77 span=3 style='width:77pt'>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 width=77 style='height:13.0pt;width:77pt'>Student ID</td>
+  <td width=118 style='width:118pt'>Major</td>
+  <td width=77 style='width:77pt'>Standing</td>
+  <td width=77 style='width:77pt'>Grade</td>
+  <td width=82 style='width:82pt'>Prerequisites?</td>
+  <td width=77 style='width:77pt'>Letters</td>
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>00101</td>
+  <td>Computer Science</td>
+  <td>Junior</td>
+  <td align=center>82</td>
+  <td>Y</td>
+  <td>B</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>00105</td>
+  <td>Economics</td>
+  <td>Sophomore</td>
+  <td align=center>95</td>
+  <td>Y</td>
+  <td>A</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>00107</td>
+  <td>Computer Science</td>
+  <td>Junior</td>
+  <td align=center>84</td>
+  <td>N</td>
+  <td>B</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>00217</td>
+  <td>Social Science</td>
+  <td>Freshman</td>
+  <td align=center>83</td>
+  <td>N</td>
+  <td>B</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>00218</td>
+  <td>Computer Science</td>
+  <td>Senior</td>
+  <td align=center>76</td>
+  <td>N</td>
+  <td>C</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>01005</td>
+  <td>Biology</td>
+  <td>Freshman</td>
+  <td align=center>92</td>
+  <td>Y</td>
+  <td>A</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>01702</td>
+  <td>Chemistry</td>
+  <td>Junior</td>
+  <td align=center>93</td>
+  <td>Y</td>
+  <td>A</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>01802</td>
+  <td>Physics</td>
+  <td>Senior</td>
+  <td align=center>86</td>
+  <td>Y</td>
+  <td>B</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>02001</td>
+  <td>Medieval History</td>
+  <td>Freshman</td>
+  <td align=center>68</td>
+  <td>N</td>
+  <td>D</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>04001</td>
+  <td>Art</td>
+  <td>Senior</td>
+  <td align=center>74</td>
+  <td>N</td>
+  <td>C</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>00501</td>
+  <td>Social Science</td>
+  <td>Senior</td>
+  <td align=center>89</td>
+  <td>N</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>02592</td>
+  <td>Chemistry</td>
+  <td>Junior</td>
+  <td align=center>82</td>
+  <td>Y</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>02846</td>
+  <td>Physics</td>
+  <td>Senior</td>
+  <td align=center>95</td>
+  <td>Y</td>
+  <td>A</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>03100</td>
+  <td>Medieval History</td>
+  <td>Freshman</td>
+  <td align=center>84</td>
+  <td>N</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>03353</td>
+  <td>Art</td>
+  <td>Senior</td>
+  <td align=center>83</td>
+  <td>N</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>03607</td>
+  <td>Social Science</td>
+  <td>Senior</td>
+  <td align=center>83</td>
+  <td>N</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>03861</td>
+  <td>Chemistry</td>
+  <td>Junior</td>
+  <td align=center>76</td>
+  <td>N</td>
+  <td>C</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>04115</td>
+  <td>Computer Science</td>
+  <td>Senior</td>
+  <td align=center>92</td>
+  <td>Y</td>
+  <td>A</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>04369</td>
+  <td>Social Science</td>
+  <td>Junior</td>
+  <td align=center>93</td>
+  <td>Y</td>
+  <td>A</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>04623</td>
+  <td>Computer Science</td>
+  <td>Sophomore</td>
+  <td align=center>93</td>
+  <td>Y</td>
+  <td>A</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>04876</td>
+  <td>Biology</td>
+  <td>Junior</td>
+  <td align=center>86</td>
+  <td>Y</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>05130</td>
+  <td>Chemistry</td>
+  <td>Freshman</td>
+  <td align=center>68</td>
+  <td>N</td>
+  <td>D</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>05384</td>
+  <td>Physics</td>
+  <td>Senior</td>
+  <td align=center>74</td>
+  <td>N</td>
+  <td>C</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>05638</td>
+  <td>Social Science</td>
+  <td>Freshman</td>
+  <td align=center>89</td>
+  <td>N</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>05892</td>
+  <td>Chemistry</td>
+  <td>Junior</td>
+  <td align=center>82</td>
+  <td>Y</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>06145</td>
+  <td>Computer Science</td>
+  <td>Senior</td>
+  <td align=center>93</td>
+  <td>Y</td>
+  <td>A</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>06399</td>
+  <td>Chemistry</td>
+  <td>Junior</td>
+  <td align=center>93</td>
+  <td>Y</td>
+  <td>A</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>06653</td>
+  <td>Computer Science</td>
+  <td>Senior</td>
+  <td align=center>86</td>
+  <td>Y</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>06907</td>
+  <td>Social Science</td>
+  <td>Junior</td>
+  <td align=center>84</td>
+  <td>N</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>07161</td>
+  <td>Computer Science</td>
+  <td>Sophomore</td>
+  <td align=center>83</td>
+  <td>N</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>07415</td>
+  <td>Biology</td>
+  <td>Junior</td>
+  <td align=center>76</td>
+  <td>N</td>
+  <td>C</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>07668</td>
+  <td>Chemistry</td>
+  <td>Freshman</td>
+  <td align=center>92</td>
+  <td>Y</td>
+  <td>A</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>07922</td>
+  <td>Physics</td>
+  <td>Senior</td>
+  <td align=center>76</td>
+  <td>N</td>
+  <td>C</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>08176</td>
+  <td>Social Science</td>
+  <td>Freshman</td>
+  <td align=center>92</td>
+  <td>Y</td>
+  <td>A</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>08430</td>
+  <td>Chemistry</td>
+  <td>Junior</td>
+  <td align=center>93</td>
+  <td>Y</td>
+  <td>A</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>08684</td>
+  <td>Computer Science</td>
+  <td>Senior</td>
+  <td align=center>93</td>
+  <td>Y</td>
+  <td>A</td>
+ </tr>
+ </tr>
+</table>
+</body>

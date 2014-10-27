@@ -1,0 +1,438 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<head>
+<script src="http://d3js.org/d3.v2.js"></script>
+</head>
+<body>
+<h1>Informatics 143</h1>
+<h2>Count of each Major</h2>
+Part 1 | 
+<a href="pie.html">Part2</a> | 
+<a href="three.html">Part3</a>
+<script>
+
+var w = 40, h = 50, scale = 20;
+var sw = 600, sh = 360, margin = 150, space = 10;
+var data = [{"major": "Art", "value": 2}, {"major": "Biology", "value": 3}, {"major": "Chemistry", "value": 8}
+, {"major": "Computer Science", "value": 9}, {"major": "Economics", "value": 1}, {"major": "Medieval History", "value": 2}
+, {"major": "Physics", "value": 4}, {"major": "Social Science", "value": 6}];
+
+var chart = d3.select("body").append("svg")
+     .attr("class", "chart")
+     .attr("width", sw)
+     .attr("height", sh);
+     
+chart.selectAll("line")
+	 .data([1,2,3,4,5,6,7,8,9,10])
+     .enter().append("line")
+     .attr("x1", space)
+     .attr("x2", (w+space)*8 + space*2)
+     .attr("y1", sh - margin)
+     .attr("y2", space)
+     .attr("opacity", 0)
+     .style("stroke", "#000")   
+     .transition()
+     .duration(1000)
+     .delay(500)
+     .attr("opacity", 1)
+     .attr("y1", function(d, i){return sh - i*scale - margin;})
+     .attr("y2", function(d, i){return sh - i*scale - margin;});
+     
+chart.selectAll("text.tick")
+	 .data([1,2,3,4,5,6,7,8,9,10])
+     .enter().append("text")
+     .attr("class", "tick")
+     .attr("transform", "rotate(0)")
+     .attr("opacity", 0)
+     .attr("y", function(d, i){return sh - i*scale - margin + 1;})
+     .attr("x", 0)
+     .transition()
+     .duration(1000)
+     .delay(1000)
+     .attr("opacity", 1)
+     .attr("text-anchor", "left")
+     .text(function(d, i) { return i; });
+     
+chart.selectAll("rect")
+     .data(data)
+   	 .enter().append("rect")
+   	 .style("fill", "steelblue")
+     .attr("x", function(d, i) { return (w+space)*i + space*2; })
+     .attr("y", sh - margin)
+     .attr("width", w)
+     .attr("height", 0)
+     .transition()
+     .duration(1000)
+     .delay(1500)
+     .attr("height", function(d) { return d.value*scale; })
+     .attr("y", function(d) { return sh-d.value*scale-margin; })
+     .text(function(d,i) { return d.major});
+     
+chart.selectAll("text.label")
+	 .data(data)
+     .enter().append("text")
+     .attr("class", "label")
+     .attr("transform", "rotate(90)")
+     .attr("opacity", 0)
+     .attr("y", function(d, i) { return -(w+space)*i-(w*.9); })
+     .attr("x", function(d, i) { return sh-margin+space})
+     .transition()
+     .duration(1000)
+     .delay(2000)
+     .attr("opacity", 1)
+     .attr("text-anchor", "left")
+     .text(function(d, i) { return d.major; });
+</script>
+
+<h2>Raw Data</h2>
+<table border=1 cellpadding=0 cellspacing=0 width=662 style='border-collapse:
+ collapse;table-layout:fixed;width:662pt'>
+ <col width=77 style='mso-width-source:userset;mso-width-alt:2816;width:77pt'>
+ <col width=118 style='mso-width-source:userset;mso-width-alt:4315;width:118pt'>
+ <col width=77 span=2 style='mso-width-source:userset;mso-width-alt:2816;
+ width:77pt'>
+ <col width=82 style='mso-width-source:userset;mso-width-alt:2998;width:82pt'>
+ <col width=77 span=3 style='width:77pt'>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 width=77 style='height:13.0pt;width:77pt'>Student ID</td>
+  <td width=118 style='width:118pt'>Major</td>
+  <td width=77 style='width:77pt'>Standing</td>
+  <td width=77 style='width:77pt'>Grade</td>
+  <td width=82 style='width:82pt'>Prerequisites?</td>
+  <td width=77 style='width:77pt'>Letters</td>
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>00101</td>
+  <td>Computer Science</td>
+  <td>Junior</td>
+  <td align=center>82</td>
+  <td>Y</td>
+  <td>B</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>00105</td>
+  <td>Economics</td>
+  <td>Sophomore</td>
+  <td align=center>95</td>
+  <td>Y</td>
+  <td>A</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>00107</td>
+  <td>Computer Science</td>
+  <td>Junior</td>
+  <td align=center>84</td>
+  <td>N</td>
+  <td>B</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>00217</td>
+  <td>Social Science</td>
+  <td>Freshman</td>
+  <td align=center>83</td>
+  <td>N</td>
+  <td>B</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>00218</td>
+  <td>Computer Science</td>
+  <td>Senior</td>
+  <td align=center>76</td>
+  <td>N</td>
+  <td>C</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>01005</td>
+  <td>Biology</td>
+  <td>Freshman</td>
+  <td align=center>92</td>
+  <td>Y</td>
+  <td>A</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>01702</td>
+  <td>Chemistry</td>
+  <td>Junior</td>
+  <td align=center>93</td>
+  <td>Y</td>
+  <td>A</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>01802</td>
+  <td>Physics</td>
+  <td>Senior</td>
+  <td align=center>86</td>
+  <td>Y</td>
+  <td>B</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>02001</td>
+  <td>Medieval History</td>
+  <td>Freshman</td>
+  <td align=center>68</td>
+  <td>N</td>
+  <td>D</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>04001</td>
+  <td>Art</td>
+  <td>Senior</td>
+  <td align=center>74</td>
+  <td>N</td>
+  <td>C</td>
+  
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>00501</td>
+  <td>Social Science</td>
+  <td>Senior</td>
+  <td align=center>89</td>
+  <td>N</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>02592</td>
+  <td>Chemistry</td>
+  <td>Junior</td>
+  <td align=center>82</td>
+  <td>Y</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>02846</td>
+  <td>Physics</td>
+  <td>Senior</td>
+  <td align=center>95</td>
+  <td>Y</td>
+  <td>A</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>03100</td>
+  <td>Medieval History</td>
+  <td>Freshman</td>
+  <td align=center>84</td>
+  <td>N</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>03353</td>
+  <td>Art</td>
+  <td>Senior</td>
+  <td align=center>83</td>
+  <td>N</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>03607</td>
+  <td>Social Science</td>
+  <td>Senior</td>
+  <td align=center>83</td>
+  <td>N</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>03861</td>
+  <td>Chemistry</td>
+  <td>Junior</td>
+  <td align=center>76</td>
+  <td>N</td>
+  <td>C</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>04115</td>
+  <td>Computer Science</td>
+  <td>Senior</td>
+  <td align=center>92</td>
+  <td>Y</td>
+  <td>A</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>04369</td>
+  <td>Social Science</td>
+  <td>Junior</td>
+  <td align=center>93</td>
+  <td>Y</td>
+  <td>A</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>04623</td>
+  <td>Computer Science</td>
+  <td>Sophomore</td>
+  <td align=center>93</td>
+  <td>Y</td>
+  <td>A</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>04876</td>
+  <td>Biology</td>
+  <td>Junior</td>
+  <td align=center>86</td>
+  <td>Y</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>05130</td>
+  <td>Chemistry</td>
+  <td>Freshman</td>
+  <td align=center>68</td>
+  <td>N</td>
+  <td>D</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>05384</td>
+  <td>Physics</td>
+  <td>Senior</td>
+  <td align=center>74</td>
+  <td>N</td>
+  <td>C</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>05638</td>
+  <td>Social Science</td>
+  <td>Freshman</td>
+  <td align=center>89</td>
+  <td>N</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>05892</td>
+  <td>Chemistry</td>
+  <td>Junior</td>
+  <td align=center>82</td>
+  <td>Y</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>06145</td>
+  <td>Computer Science</td>
+  <td>Senior</td>
+  <td align=center>93</td>
+  <td>Y</td>
+  <td>A</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>06399</td>
+  <td>Chemistry</td>
+  <td>Junior</td>
+  <td align=center>93</td>
+  <td>Y</td>
+  <td>A</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>06653</td>
+  <td>Computer Science</td>
+  <td>Senior</td>
+  <td align=center>86</td>
+  <td>Y</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>06907</td>
+  <td>Social Science</td>
+  <td>Junior</td>
+  <td align=center>84</td>
+  <td>N</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>07161</td>
+  <td>Computer Science</td>
+  <td>Sophomore</td>
+  <td align=center>83</td>
+  <td>N</td>
+  <td>B</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>07415</td>
+  <td>Biology</td>
+  <td>Junior</td>
+  <td align=center>76</td>
+  <td>N</td>
+  <td>C</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>07668</td>
+  <td>Chemistry</td>
+  <td>Freshman</td>
+  <td align=center>92</td>
+  <td>Y</td>
+  <td>A</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>07922</td>
+  <td>Physics</td>
+  <td>Senior</td>
+  <td align=center>76</td>
+  <td>N</td>
+  <td>C</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>08176</td>
+  <td>Social Science</td>
+  <td>Freshman</td>
+  <td align=center>92</td>
+  <td>Y</td>
+  <td>A</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>08430</td>
+  <td>Chemistry</td>
+  <td>Junior</td>
+  <td align=center>93</td>
+  <td>Y</td>
+  <td>A</td>
+  
+ </tr>
+ <tr height=13 style='height:13.0pt'>
+  <td height=13 class=xl65 align=center style='height:13.0pt'>08684</td>
+  <td>Computer Science</td>
+  <td>Senior</td>
+  <td align=center>93</td>
+  <td>Y</td>
+  <td>A</td>
+ </tr>
+ </tr>
+</table>
+</body>
